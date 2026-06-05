@@ -5,10 +5,11 @@ const session = require('express-session');
 
 const app = express();
 
-// ⚠️ ATENÇÃO: Coloque sua senha do Supabase aqui abaixo!
-const SUPABASE_URI = 'postgresql://postgres:i9iExW13z0MxjADb@db.nrkkzwvxdilcyyefatye.supabase.co:5432/postgres';
-
-const pool = new Pool({ connectionString: SUPABASE_URI });
+// Conexão corrigida e segura para rodar na nuvem do Render com o Supabase
+const pool = new Pool({ 
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
