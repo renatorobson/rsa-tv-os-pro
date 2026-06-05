@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSA TV OS PRO</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col md:flex-row">
+
+  <!-- MENU LATERAL -->
+  <aside class="w-full md:w-64 bg-slate-900 text-slate-100 flex flex-col border-b md:border-b-0 md:border-r border-slate-800 shrink-0">
+    <div class="p-6 border-b border-slate-800 flex items-center space-x-3">
+      <div class="bg-blue-600 p-2 rounded-xl text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-lg font-bold tracking-tight text-white">RSA TV OS PRO</h1>
+        <p class="text-xs text-slate-400">Controle Operacional</p>
+      </div>
+    </div>
+
+    <div class="flex-1 p-4 space-y-6 overflow-y-auto max-h-[calc(100vh-220px)] md:max-h-none">
+      <!-- Perfil -->
+      <section class="space-y-2">
+        <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">⚙️ Configurar Meu Perfil</h2>
+        <form action="/api/dados" method="POST" class="space-y-2 bg-slate-800 p-3 rounded-xl border border-slate-700">
+          <input type="text" id="perfil_nome" name="nome" placeholder="Meu Nome" class="w-full px-3 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+          <input type="text" id="perfil_pix" name="pix" placeholder="Meu Pix" class="w-full px-3 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+          <button type="submit" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-medium py-1.5 rounded-lg text-xs transition-colors border border-slate-600">Atualizar Perfil</button>
+        </form>
+      </section>
+
+      <!-- Empresa -->
+      <section class="space-y-2">
+        <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">🏢 Cadastrar Empresa</h2>
+        <form action="/api/empresas" method="POST" class="space-y-2 bg-slate-800 p-3 rounded-xl border border-slate-700">
+          <input type="text" name="nome_empresa" placeholder="Nome da Empresa" required class="w-full px-3 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-1.5 rounded-lg text-xs transition-colors">Salvar Empresa</button>
+        </form>
+      </section>
+
+      <!-- Local -->
+      <section class="space-y-2">
+        <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">📍 Cadastrar Local</h2>
+        <form action="/api/locais" method="POST" class="space-y-2 bg-slate-800 p-3 rounded-xl border border-slate-700">
+          <select name="empresa_id" id="select_empresa_local" required class="w-full px-3 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+            <option value="">Selecione uma empresa primeiro</option>
+          </select>
+          <input type="text" name="nome_local" placeholder="Ex: Filial Centro..." required class="w-full px-3 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-1.5 rounded-lg text-xs transition-colors">Salvar Local</button>
+        </form>
+      </section>
+
+      <!-- Tabela Preço -->
+      <section class="space-y-2">
+        <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">💰 Tabela de Preços</h2>
+        <form action="/api/catalogo" method="POST" class="space-y-2 bg-slate-800 p-3 rounded-xl border border-slate-700">
+          <input type="text" name="nome_servico" placeholder="Ex: Check-in Fotográfico" required class="w-full px-3 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+          <input type="number" step="0.01" name="valor_fixo" placeholder="Preço (R$)" required class="w-full px-3 py-1.5 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500">
+          <label class="inline-flex items-center text-slate-300 text-xs mt-1 cursor-pointer select-none">
+            <input type="checkbox" name="por_ponto" class="rounded bg-slate-700 border-slate-600 text-emerald-500 mr-2">
+            Cobrar por Ponto / Foto
+          </label>
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1.5 rounded-lg text-xs transition-colors">Fixar Valor</button>
+        </form>
+      </section>
+    </div>
+
+    <!-- Rodapé do Menu com Créditos -->
+    <div class="p-4 border-t border-slate-800 bg-slate-950 space-y-3">
+      <div class="text-center text-[10px] text-slate-500">
+        <p>Desenvolvido por <strong>Renato Robson</strong></p>
+        <p>&copy; 2026 RSA TV. Direitos Reservados.</p>
+      </div>
+      <a href="/logout" class="flex items-center justify-center w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-xl transition-colors text-sm text-center shadow-lg">
+        🚪 Sair do Sistema
+      </a>
+    </div>
+  </aside>
+
+  <!-- PAINEL DA DIREITA -->
+  <main class="flex-1 p-4 md:p-8 space-y-6 overflow-x-hidden">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Painel de Atendimentos</h1>
+        <p class="text-sm text-slate-500 mt-1">Controle financeiro integrado para a nuvem.</p>
+      </div>
+      <!-- FILTRO FINANCEIRO DE EMPRESA -->
+      <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-2">
+        <label class="text-xs font-bold text-slate-500 uppercase">Filtrar Finanças:</label>
+        <select id="filtro_financeiro_empresa" class="text-sm bg-slate-50 border border-slate-200 rounded-lg p-1.5 font-semibold text-slate-700 focus:outline-none">
+          <option value="TODAS">🌍 Todas as Empresas (Geral)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pendentes</p>
+          <h3 class="text-2xl font-bold text-amber-500 mt-1" id="dash_pendente">R$ 0,00</h3>
+        </div>
+        <div class="bg-amber-50 p-3 rounded-xl text-amber-500">🧪</div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">A Receber (Concluídos)</p>
+          <h3 class="text-2xl font-bold text-blue-600 mt-1" id="dash_concluido">R$ 0,00</h3>
+        </div>
+        <div class="bg-blue-50 p-3 rounded-xl text-blue-600">⏳</div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Liquidado (Pago)</p>
+          <h3 class="text-2xl font-bold text-emerald-600 mt-1" id="dash_pago">R$ 0,00</h3>
+        </div>
+        <div class="bg-emerald-50 p-3 rounded-xl text-emerald-600">💰</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+      <!-- Form Lançar OS -->
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:col-span-1 space-y-4">
+        <h2 class="text-lg font-bold text-slate-900">📋 Lançar OS</h2>
+        <form action="/api/servicos" method="POST" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Empresa</label>
+            <select name="empresa_id" id="select_empresa" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Local / Filial</label>
+            <select name="local_id" id="select_local" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+              <option value="">Selecione a empresa acima primeiro</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Número do Ticket</label>
+            <input type="text" name="ticket_externo" placeholder="Nº do Ticket" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Serviço Executado</label>
+            <select name="catalogo_id" id="select_catalogo" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm"></select>
+          </div>
+          <div id="campo_pontos" class="hidden">
+            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Quantidade de Pontos/Fotos</label>
+            <input type="number" name="pontos_realizados" id="input_pontos" value="0" min="0" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+          </div>
+          <div class="pt-2 flex items-center justify-between text-sm">
+            <span class="text-slate-400">Total:</span>
+            <span class="font-bold text-slate-900 text-base" id="lbl_preco_contrato">R$ 0,00</span>
+          </div>
+          <button type="submit" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl cursor-pointer hover:bg-slate-800 transition-colors">Lançar OS</button>
+        </form>
+      </div>
+
+      <!-- Histórico -->
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:col-span-2 space-y-4">
+        <h2 class="text-lg font-bold text-slate-900">Histórico de Atendimentos</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="text-xs uppercase tracking-wider text-slate-400 border-b">
+                <th class="py-3 px-2">Empresa / Local</th>
+                <th class="py-3 px-2">Serviço</th>
+                <th class="py-3 px-2">Valor</th>
+                <th class="py-3 px-2 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody id="tabela_servicos" class="divide-y"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let dadosCatalogo = [];
+    let todosServicos = [];
+
+    async function carregarTudo() {
+      // 1. Carrega Perfil
+      const resDados = await fetch('/api/dados');
+      const dados = await resDados.json();
+      if(dados.nome) document.getElementById('perfil_nome').value = dados.nome;
+      if(dados.pix) document.getElementById('perfil_pix').value = dados.pix;
+
+      // 2. Carrega Empresas e popula os selects e o filtro financeiro
+      const resEmpresas = await fetch('/api/empresas');
+      const empresas = await resEmpresas.json();
+      const selEmpresaLocal = document.getElementById('select_empresa_local');
+      const selEmpresa = document.getElementById('select_empresa');
+      const filtroFinEmpresa = document.getElementById('filtro_financeiro_empresa');
+      
+      selEmpresaLocal.innerHTML = '<option value="">Escolha a Empresa</option>';
+      selEmpresa.innerHTML = '<option value="">Escolha a Empresa</option>';
+      
+      // Limpa preservando a opção geral
+      filtroFinEmpresa.innerHTML = '<option value="TODAS">🌍 Todas as Empresas (Geral)</option>';
+
+      empresas.forEach(emp => {
+        selEmpresaLocal.innerHTML += `<option value="${emp.id}">${emp.nome_empresa}</option>`;
+        selEmpresa.innerHTML += `<option value="${emp.id}">${emp.nome_empresa}</option>`;
+        filtroFinEmpresa.innerHTML += `<option value="${emp.id}">🏢 ${emp.nome_empresa}</option>`;
+      });
+
+      // 3. Carrega Locais e faz a lógica de vínculo no formulário
+      const resLocais = await fetch('/api/locais');
+      const locais = await resLocais.json();
+      const selLocal = document.getElementById('select_local');
+      
+      selEmpresa.addEventListener('change', () => {
+        const empId = selEmpresa.value;
+        if(!empId) {
+          selLocal.innerHTML = '<option value="">Selecione a empresa acima primeiro</option>';
+          return;
+        }
+        selLocal.innerHTML = '<option value="">Selecione o Local / Filial</option>';
+        const locaisFiltrados = locais.filter(l => l.empresa_id == empId);
+        if(locaisFiltrados.length === 0) {
+          selLocal.innerHTML = '<option value="">Nenhum local cadastrado para esta empresa</option>';
+        } else {
+          locaisFiltrados.forEach(l => {
+            selLocal.innerHTML += `<option value="${l.id}">${l.nome_local}</option>`;
+          });
+        }
+      });
+
+      // 4. Carrega Catálogo de Preços
+      const resCatalogo = await fetch('/api/catalogo');
+      dadosCatalogo = await resCatalogo.json();
+      const selCatalogo = document.getElementById('select_catalogo');
+      selCatalogo.innerHTML = '<option value="">Selecione o Serviço</option>';
+      dadosCatalogo.forEach(c => {
+        selCatalogo.innerHTML += `<option value="${c.id}">${c.nome_servico}</option>`;
+      });
+
+      const campoPontos = document.getElementById('campo_pontos');
+      const inputPontos = document.getElementById('input_pontos');
+      const lblPreco = document.getElementById('lbl_preco_contrato');
+
+      function atualizarCalculoPreco() {
+        const item = dadosCatalogo.find(c => c.id == selCatalogo.value);
+        if(!item) { lblPreco.innerText = 'R$ 0,00'; campoPontos.classList.add('hidden'); return; }
+        if(item.por_ponto === 1) {
+          campoPontos.classList.remove('hidden');
+          const pts = parseInt(inputPontos.value) || 0;
+          lblPreco.innerText = (item.valor_fixo * pts).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        } else {
+          campoPontos.classList.add('hidden');
+          lblPreco.innerText = item.valor_fixo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+      }
+      selCatalogo.addEventListener('change', atualizarCalculoPreco);
+      inputPontos.addEventListener('input', atualizarCalculoPreco);
+
+      // 5. Carrega Histórico de Serviços
+      const resServicos = await fetch('/api/servicos');
+      todosServicos = await resServicos.json();
+
+      // Escuta mudanças no filtro financeiro da barra de topo
+      filtroFinEmpresa.addEventListener('change', renderizarFinanceiroEHistorico);
+
+      // Renderiza na primeira execução
+      renderizarFinanceiroEHistorico();
+    }
+
+    function renderizarFinanceiroEHistorico() {
+      const filtroId = document.getElementById('filtro_financeiro_empresa').value;
+      const tabela = document.getElementById('tabela_servicos');
+      tabela.innerHTML = '';
+
+      let pendente = 0, concluido = 0, pago = 0;
+
+      // Filtra os serviços caso uma empresa específica seja selecionada
+      const servicosFiltrados = todosServicos.filter(s => {
+        if (filtroId === 'TODAS') return true;
+        return s.empresa_id == filtroId;
+      });
+
+      if(servicosFiltrados.length === 0) {
+        tabela.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-400 text-sm">Nenhum chamado para o filtro selecionado.</td></tr>`;
+      }
+
+      servicosFiltrados.forEach(s => {
+        const valorReal = parseFloat(s.valor) || 0;
+        
+        // Soma os totais com base no filtro selecionado
+        if(s.status === 'Pendente') pendente += valorReal;
+        if(s.status === 'Concluído') concluido += valorReal;
+        if(s.status === 'Pago') pago += valorReal;
+
+        tabela.innerHTML += `
+          <tr class="hover:bg-slate-50">
+            <td class="py-3 px-2">
+              <span class="font-semibold text-slate-900 block">${s.nome_empresa || 'Empresa'}</span>
+              <span class="text-xs text-slate-400 block">${s.nome_local || 'Local'}</span>
+              <span class="text-xs font-mono inline-block text-blue-600 cursor-pointer" onclick="editarTicket(${s.id}, '${s.ticket_externo}')">${s.ticket_externo} ✏️</span>
+            </td>
+            <td class="py-3 px-2 text-xs">
+              <span class="font-medium text-slate-700 block">${s.nome_servico}</span>
+            </td>
+            <td class="py-3 px-2 font-bold text-slate-900">
+              ${valorReal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            </td>
+            <td class="py-3 px-2 text-right">
+              <select onchange="mudarStatus(${s.id}, this.value)" class="text-xs border rounded p-1 font-medium bg-white">
+                <option value="Pendente" ${s.status === 'Pendente' ? 'selected' : ''}>⏳ Pendente</option>
+                <option value="Concluído" ${s.status === 'Concluído' ? 'selected' : ''}>✔️ Concluído</option>
+                <option value="Pago" ${s.status === 'Pago' ? 'selected' : ''}>💰 Pago</option>
+              </select>
+            </td>
+          </tr>
+        `;
+      });
+
+      // Atualiza os painéis numéricos do topo baseados no filtro ativo!
+      document.getElementById('dash_pendente').innerText = pendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('dash_concluido').innerText = concluido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('dash_pago').innerText = pago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    async function mudarStatus(id, novoStatus) {
+      await fetch('/api/servicos/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status: novoStatus })
+      });
+      // Recarrega os dados da API para atualizar a lista geral e recalcular os cartões
+      const resServicos = await fetch('/api/servicos');
+      todosServicos = await resServicos.json();
+      renderizarFinanceiroEHistorico();
+    }
+
+    async function editarTicket(id, ticketAtual) {
+      const novoTicket = prompt("Digite o novo número do Ticket:", ticketAtual);
+      if (novoTicket) {
+        await fetch('/api/servicos/editar-ticket', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, novo_ticket: novoTicket.trim() })
+        });
+        const resServicos = await fetch('/api/servicos');
+        todosServicos = await resServicos.json();
+        renderizarFinanceiroEHistorico();
+      }
+    }
+
+    window.onload = carregarTudo;
+  </script>
+</body>
+</html>
